@@ -127,8 +127,9 @@ let createSearchList = document.querySelector('.create-search-list');
 let userStr;
 let search = null;
 
-
-inputSearch.onchange = () => {
+inputSearch.addEventListener('change', createNewQuery);
+btnSearch.addEventListener('click', createSerchBlock)
+function createNewQuery() {
 
 	userStr = inputSearch.value;
 
@@ -141,22 +142,27 @@ inputSearch.onchange = () => {
 
 
 //Тут приходиься около 5 секунд чекати
-btnSearch.onclick = (e) => {
-	e.preventDefault();
+function createSerchBlock() {
 	
-	let a = document.querySelector('.create-search-list');
-	let serchOl = document.createElement('ol');
-	let arr = search.results;
-	
-	btnSearch.classList.toggle('showList');
-	a.innerHTML = '';
-	
-	for (let i = 0; i < arr.length; i++) {
-		let serchLi = document.createElement('li');
-		serchLi.textContent = `${arr[i].name}`;
-		serchOl.appendChild(serchLi);
+	if (search === null){
+		createNewQuery();
+		setTimeout(createSerchBlock, 5000);
+	}else{
+		
+		let a = document.querySelector('.create-search-list');
+		let serchOl = document.createElement('ol');
+		let arr = search.results;
+		
+		btnSearch.classList.toggle('showList');
+		a.innerHTML = '';
+		
+		for (let i = 0; i < arr.length; i++) {
+			let serchLi = document.createElement('li');
+			serchLi.textContent = `${arr[i].name}`;
+			serchOl.appendChild(serchLi);
+		}
+		createSearchList.appendChild(serchOl);
 	}
-	createSearchList.appendChild(serchOl);
 
 }
 
